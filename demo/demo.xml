@@ -1,0 +1,10 @@
+<odoo>
+  <data>
+
+    <record id="todo_1" model="todo.todos">
+      <field name="todo">Hello, world</field>
+      <field name="isCompleted">0</field>
+    </record>
+
+  </data>
+</odoo>

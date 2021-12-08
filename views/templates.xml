@@ -1,0 +1,289 @@
+<odoo>
+  <data>
+
+    <!-- Todo list -->
+    <template id="todos">
+      <t t-call="website.layout">
+        <t t-set="title">待辦事項</t>
+
+        <div class="container">
+          <div class="row">
+            <div class="col-md-5">
+              <div t-foreach="todos" t-as="todo">
+                <h3>
+                  <a t-attf-href="#{ root }/todo/todo/#{ todo.id }">
+                    <t t-esc="todo.todo" />
+                  </a>
+                </h3>
+                <div>
+                  <t t-esc="todo.description" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </t>
+    </template>
+
+    <!-- Tags list -->
+    <template id="tags">
+      <t t-call="website.layout">
+        <t t-set="title">標籤</t>
+
+        <div class="container">
+          <div class="row">
+            <div class="col-md-5">
+              <div t-foreach="tags" t-as="tag">
+                <h3>
+                  <a t-attf-href="#{ root }/todo/tag/#{ tag.id }">
+                    <t t-esc="tag.title" />
+                  </a>
+                </h3>
+                <div>
+                  <strong>
+                    <t t-esc="tag.note" />
+                  </strong>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </t>
+    </template>
+
+    <!-- Tag individual -->
+    <template id="tag">
+      <t t-call="website.layout">
+        <t t-set="title">標籤</t>
+
+        <div class="container">
+          <div class="row">
+            <div class="col-md-5">
+              <h3>
+                <t t-esc="tag.title" />
+              </h3>
+              <div>
+                <strong>
+                  <t t-esc="tag.note" />
+                </strong>
+              </div>
+              <table class="table table-striped">
+                <tr>
+                  <th>待辦事項</th>
+                  <th>說明</th>
+                </tr>
+                <tr t-foreach="tag.todos_ids" t-as="todos">
+                  <td>
+                    <t t-esc="todos.todo" />
+                  </td>
+                  <td>
+                    <t t-esc="todos.description" />
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+
+        </div>
+      </t>
+    </template>
+
+
+    <!-- Individual todo -->
+    <template id="todo">
+      <t t-call="website.layout">
+        <t t-set="title">清單</t>
+
+        <div class="container">
+          <div class="row">
+            <div class="col-md-12">
+
+              <a t-attf-href="#{ root }/todo/todo/createpage" class="btn btn-primary">create</a>
+              <a t-attf-href="#{ root }/todo/todo/edit/#{ todo.id }" class="btn btn-warning">edit</a>
+
+              <h1>
+                <t t-esc="todo.todo" />
+              </h1>
+
+              <table class="table table-striped">
+                <tr>
+                  <th>待辦事項</th>
+                  <th>說明</th>
+                  <th>標籤</th>
+                  <th>狀態</th>
+                  <th>已完成</th>
+                </tr>
+                <tr>
+                  <td>
+                    <t t-esc="todo.todo" />
+                  </td>
+                  <td>
+                    <t t-esc="todo.description" />
+                  </td>
+                  <td>
+                    <t t-esc="todo.tag.title" />
+                  </td>
+                  <td>
+                    <t t-esc="todo.state" />
+                  </td>
+                  <td>
+                    <t t-esc="todo.isCompleted" />
+                  </td>
+                </tr>
+              </table>
+
+            </div>
+          </div>
+
+        </div>
+      </t>
+    </template>
+
+    <!-- Todo create page -->
+    <template id="reatepage">
+      <t t-call="website.layout">
+        <t t-set="title">新增TODO</t>
+        <div class="container">
+          <div class="row">
+            <div class="col-md-12">
+              <!-- todo form -->
+              <form action="/todo/todo/create">
+                <div class="form-group">
+                  <label>待辦事項</label>
+                  <input name="todo" type="text" class="form-control" placeholder="請輸入" />
+                </div>
+
+                <div class="form-check">
+                  <input name="isCompleted" type="checkbox" class="form-check-input" />
+                  <label class="form-check-label">已完成?</label>
+                </div>
+
+                <div class="form-group">
+                  <label>標籤</label>
+                  <select name="tag" class="form-control">
+                    <t t-foreach="tags" t-as="tag">
+                      <option t-esc="tag.title" t-att-value="tag.id" />
+                    </t>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label>說明</label>
+                  <textarea name="description" type="text" class="form-control" placeholder="Description"></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary">送出</button>
+              </form>
+              <!-- end of todo form -->
+            </div>
+          </div>
+        </div>
+      </t>
+    </template>
+
+    <!-- Todo edit page -->
+    <template id="editpage">
+      <t t-call="website.layout">
+        <t t-set="title">修改TODO</t>
+        <div class="container">
+          <div class="row">
+            <div class="col-md-12">
+              <!-- table -->
+              <table class="table table-striped">
+                <tr>
+                  <th>待辦事項</th>
+                  <th>說明</th>
+                  <th>標籤</th>
+                  <th>狀態</th>
+                  <th>已完成</th>
+                </tr>
+                <tr>
+                  <td>
+                    <t t-esc="todo.todo" />
+                  </td>
+                  <td>
+                    <t t-esc="todo.description" />
+                  </td>
+                  <td>
+                    <t t-esc="todo.tag.title" />
+                  </td>
+                  <td>
+                    <t t-esc="todo.state" />
+                  </td>
+                  <td>
+                    <t t-esc="todo.isCompleted" />
+                  </td>
+                </tr>
+              </table>
+              <!-- end table -->
+
+              <!-- todo form -->
+              <h1>
+                <t t-esc="todo_id" />
+              </h1>
+              <form action="/todo/todo/edit">
+                <div class="form-group">
+                  <label>編號</label>
+                  <input name="todo_id" t-att-value="todo_id" type="hidden" class="form-control" />
+                </div>
+
+                <div class="form-group">
+                  <label>待辦事項</label>
+                  <input name="todo" t-att-value="todo.todo" type="text" class="form-control" placeholder="請輸入待辦事項" />
+                </div>
+
+                <div class="form-check">
+                  <input name="isCompleted" t-att-checked="todo.isCompleted" type="checkbox" class="form-check-input" />
+                  <label class="form-check-label">Is completed?</label>
+                </div>
+
+                <div class="form-group">
+                  <label>標籤</label>
+                  <select name="tag" t-att-value="tag.id" class="form-control">
+                    <t t-foreach="tags" t-as="tag">
+                      <option t-esc="tag.title" t-att-value="tag.id" />
+                    </t>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label>說明</label>
+                  <textarea name="description" type="text" class="form-control" placeholder="請輸入說明">
+                    <t t-esc="todo.description" />
+                  </textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary">送出</button>
+              </form>
+              <!-- end of todo form -->
+            </div>
+          </div>
+        </div>
+      </t>
+    </template>
+
+
+    <!-- Created page -->
+    <template id="message">
+      <t t-call="website.layout">
+        <t t-set="title">TODO訊息</t>
+        <h1 class="text-center">
+          <t t-esc="message" />
+        </h1>
+      </t>
+    </template>
+
+    <!-- Welcome page -->
+    <template id="welcome">
+      <t t-call="website.layout">
+        <t t-set="title">歡迎使用TODO</t>
+        <h1 class="text-center">
+          <t t-esc="message" />
+        </h1>
+      </t>
+    </template>
+
+  </data>
+</odoo>

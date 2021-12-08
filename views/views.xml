@@ -1,0 +1,110 @@
+<odoo>
+  <!-- explicit list view definition -->
+
+  <!-- Todos list -->
+  <record model="ir.ui.view" id="todo_list">
+    <field name="name">清單list</field>
+    <field name="model">todo.todos</field>
+    <field name="arch" type="xml">
+      <tree>
+        <field name="todo" />
+        <field name="isCompleted" />
+        <field name="description" />
+      </tree>
+    </field>
+  </record>
+
+  <!-- Todo tags list -->
+
+  <record model="ir.ui.view" id="todotags_list">
+    <field name="name">標籤list</field>
+    <field name="model">todo.tags</field>
+    <field name="arch" type="xml">
+      <tree>
+        <field name="title" />
+      </tree>
+    </field>
+  </record>
+
+  <record model="ir.ui.view" id="tags_form">
+    <field name="name">Todo tags form</field>
+    <field name="model">todo.tags</field>
+    <field name="arch" type="xml">
+      <form string="Todo tags form">
+        <sheet>
+          <group>
+            <group>
+              <field name="title" />
+              <field name="note" />
+            </group>
+            <group>
+              <field name="todos_ids">
+                <tree>
+                  <field name="todo" />
+                  <field name="isCompleted" />
+                </tree>
+              </field>
+            </group>
+          </group>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+
+  <!-- Todo form -->
+  <record model="ir.ui.view" id="todo_form">
+    <field name="name">Todo form</field>
+    <field name="model">todo.todos</field>
+    <field name="arch" type="xml">
+      <form string="Todo form">
+        <header>
+          <button string="已完成" name="complete_todo" type="object" confirm="確認已完成?" />
+          <button string="未完成" name="uncomplete_todo" type="object" confirm="確認未完成?" />
+          <field name="state" widget="statusbar" options="{'clickable': '1', 'fold_field': 'fold'}" />
+        </header>
+
+        <sheet>
+          <group>
+            <group>
+
+              <separator string="Todo's form" />
+              <field name="todo"></field>
+              <field name="isCompleted"></field>
+              <field name="state"></field>
+              <field name="tag"></field>
+
+              <separator string="Description" />
+              <field name="description"></field>
+            </group>
+          </group>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <!-- actions opening views on models -->
+
+  <record model="ir.actions.act_window" id="todo_todo_action_window">
+    <field name="name">清單</field>
+    <field name="res_model">todo.todos</field>
+    <field name="view_mode">tree,form,kanban</field>
+  </record>
+
+  <record model="ir.actions.act_window" id="todo_tags_action_window">
+    <field name="name">標籤</field>
+    <field name="res_model">todo.tags</field>
+    <field name="view_mode">tree,form</field>
+  </record>
+
+
+  <!-- Top menu item -->
+  <menuitem name="Lab6(待辦事項Todo)" id="menu_root" />
+  <!-- menu categories -->
+  <menuitem name="清單" id="todo_menu_1" parent="menu_root" />
+  <menuitem name="標籤" id="todo_menu_2" parent="menu_root" />
+  <!-- actions -->
+  <menuitem name="你的清單" id="todo_todo_menu_1_list" parent="todo_menu_1" action="todo_todo_action_window" />
+  <menuitem name="你的標籤" id="todo_tags_menu_1_list" parent="todo_menu_2" action="todo_tags_action_window" />
+
+</odoo>
