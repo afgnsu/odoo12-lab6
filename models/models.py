@@ -33,12 +33,12 @@ class Todos(models.Model):
         return super(Todos, self).create(vals)
 
     def complete_todo(self):
-        """Complete todo"""
+        """已完成"""
         for todo in self:
             todo.isCompleted = True
 
     def uncomplete_todo(self):
-        """Complete todo"""
+        """未完成"""
         for todo in self:
             todo.isCompleted = False
 
