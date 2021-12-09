@@ -24,7 +24,7 @@ class Todos(models.Model):
 
     @api.model
     def create(self, vals):
-        if not vals.get('description'):  #如果沒有描述
+        if not vals.get('description'):  #如果沒有說明，就預設加入'無說明XD'
             vals['description'] = '無說明XD'
 
         if vals.get('isCompleted'):
