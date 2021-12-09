@@ -6,7 +6,7 @@ class TodoTags(models.Model):
     _description = '待辦事項_標籤'
     _rec_name = 'title'
 
-    title = fields.Char(required=True, string="Tag name")
+    title = fields.Char(required=True, string="標籤名")
     note = fields.Text()
 
     todos_ids = fields.One2many('todo.todos', 'tag')
@@ -15,17 +15,17 @@ class Todos(models.Model):
     _name = 'todo.todos'
     _description = '待辦事項_清單'
 
-    todo = fields.Char(required=True)
-    isCompleted = fields.Boolean()
-    description = fields.Text()
+    todo = fields.Char(required=True, string="待辦清單")
+    isCompleted = fields.Boolean(string="已完成?")
+    description = fields.Text(string="說明")
     
-    state = fields.Selection(selection=[('draft', '草稿'),('short', '短程'),('long', '長程'),('urgent', '急件'),], string="狀態", default="draft")
-    tag = fields.Many2one('todo.tags')
+    state = fields.Selection(selection=[('draft', '草案'),('short', '短計畫'),('long', '長計畫'),('urgent', '急件'),], string="狀態", default="draft")
+    tag = fields.Many2one('todo.tags', string="標籤")
 
     @api.model
     def create(self, vals):
         if not vals.get('description'):  #如果沒有描述
-            vals['description'] = '預設描述'
+            vals['description'] = '無說明XD'
 
         if vals.get('isCompleted'):
             raise UserError('你不能建立已經完成的待辦事項！')
